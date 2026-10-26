@@ -1,84 +1,196 @@
+
 <!doctype html>
 <html lang="ms">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090b0f">
-<title>Market Lens — Demo</title>
+<title>Market Lens — XAUUSD</title>
 <style>
-:root{--bg:#090b0f;--panel:#12161d;--panel2:#191f28;--text:#f4f6fa;--muted:#8d98a8;--yellow:#f6d62e;--green:#35d39a;--red:#ff6473;--line:#28303b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.app{max-width:480px;margin:auto;min-height:100vh;padding:18px 16px calc(28px + env(safe-area-inset-bottom))}
-.top{display:flex;align-items:center;justify-content:space-between;margin:8px 0 22px}.brand{font-size:19px;font-weight:850;letter-spacing:.2px}.brand span{color:var(--yellow)}.pill{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:12px}
-h1{font-size:25px;margin:0 0 7px;letter-spacing:-.6px} .sub{color:var(--muted);margin:0 0 20px;line-height:1.45}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:13px 0}
-.label{display:block;color:var(--muted);font-size:12px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
-.row{display:flex;gap:10px}.field{flex:1;min-width:0}select,input,button{font:inherit}select{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:13px 10px;outline:none}
-.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.price{font-size:23px;font-weight:800}.change{color:var(--green);font-size:12px;margin-top:4px}
-.chart{height:175px;border-radius:12px;background:linear-gradient(180deg,rgba(53,211,154,.08),transparent 80%),#0d1117;overflow:hidden;border:1px solid #202833}
-.chart svg{width:100%;height:100%;display:block}.upload{display:block;width:100%;border:1px dashed #424b59;border-radius:12px;padding:15px;text-align:center;color:var(--muted);background:#0e1218}
-.upload input{display:none}.preview{max-width:100%;max-height:170px;display:none;margin:12px auto 0;border-radius:10px}
-.primary{width:100%;border:0;border-radius:13px;background:var(--yellow);color:#171606;font-weight:850;padding:15px;margin-top:12px}
-.secondary{border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--text);padding:10px 12px}
-.result{display:none}.signal{display:flex;align-items:center;gap:10px;font-weight:850;font-size:21px}.dot{width:11px;height:11px;border-radius:50%;background:var(--yellow)}.result p{color:var(--muted);line-height:1.5;font-size:13px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}.stat{background:var(--panel2);padding:11px;border-radius:12px}.stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:6px}.stat b{font-size:13px}
-.disclaimer{font-size:11px;color:#788392;line-height:1.5;text-align:center;margin:18px 4px}.nav{display:flex;justify-content:space-around;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:11px}.nav b{color:var(--yellow)}
+:root{color-scheme:dark;--bg:#090b0f;--panel:#12161d;--line:#28303b;--muted:#98a3b3;--yellow:#f6d62e;--green:#35d39a;--red:#ff6473}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#f4f6fa;font:15px -apple-system,BlinkMacSystemFont,sans-serif}
+main{max-width:500px;margin:auto;padding:20px 16px 35px}
+header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 28px}
+.brand{font-weight:900;font-size:20px}.brand span{color:var(--yellow)}
+.pill{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:7px 9px;border-radius:20px}
+h1{font-size:26px;margin:0 0 7px}
+.sub{color:var(--muted);line-height:1.5;font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:16px;margin:14px 0}
+.label{color:var(--muted);font-size:11px;letter-spacing:1px;font-weight:700}
+.price{font-size:30px;font-weight:850;margin:8px 0}
+.muted{color:var(--muted);font-size:12px;line-height:1.5}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:var(--yellow);color:#171606;font-weight:850;font-size:14px;margin-top:12px}
+.chart{width:100%;height:170px;display:block;margin-top:15px}
+.signal{font-size:27px;font-weight:900;margin:12px 0}
+.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.stat{background:#191f28;border-radius:11px;padding:11px;min-width:0}
+.stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.stat b{font-size:13px;overflow-wrap:anywhere}
+.note{font-size:11px;color:var(--muted);line-height:1.6;text-align:center;margin-top:20px}
+hr{border:0;border-top:1px solid var(--line);margin:15px 0}
 </style>
 </head>
 <body>
-<main class="app">
-  <div class="top"><div class="brand">MARKET <span>LENS</span></div><div class="pill">PROTOTYPE · DEMO</div></div>
-  <h1>Market prediction</h1>
-  <p class="sub">Semak carta dan bina aliran analisis pasaran dalam satu paparan.</p>
+<main>
+<header><div class="brand">MARKET <span>LENS</span></div><div class="pill">XAUUSD · LIVE DATA</div></header>
+<h1>Analisis pasaran emas</h1>
+<p class="sub">Harga spot emas, trend EMA dan RSI berdasarkan siri harga intraday.</p>
 
-  <section class="card">
-    <div class="row">
-      <div class="field"><label class="label" for="asset">Aset</label><select id="asset"><option>XAUUSD · Gold</option><option>EURUSD</option><option>GBPUSD</option><option>BTCUSD</option></select></div>
-      <div class="field"><label class="label" for="tf">Timeframe</label><select id="tf"><option>M1</option><option selected>M5</option><option>M15</option><option>M30</option><option>H1</option><option>H4</option></select></div>
-    </div>
-  </section>
+<section class="card">
+<div class="label">HARGA SPOT EMAS · USD/OUNCE</div>
+<div class="price" id="price">Memuatkan...</div>
+<div class="muted" id="updated">Menyambung kepada sumber data...</div>
+<hr>
+<div class="label">CARTA HARGA INTRADAY</div>
+<svg id="chart" class="chart" viewBox="0 0 360 170" preserveAspectRatio="none"></svg>
+<div class="muted" id="coverage">Memeriksa data sejarah...</div>
+<button id="refresh">KEMAS KINI DATA</button>
+</section>
 
-  <section class="card">
-    <div class="chart-head"><div><div class="label">Live chart area</div><div class="price" id="price">2,345.60</div><div class="change">Chart ilustrasi · bukan harga langsung</div></div><button class="secondary" id="refresh">Refresh demo</button></div>
-    <div class="chart">
-      <svg viewBox="0 0 360 175" preserveAspectRatio="none" aria-label="Carta ilustrasi">
-        <g stroke="#27313c" stroke-width="1"><path d="M0 35H360M0 70H360M0 105H360M0 140H360"/><path d="M60 0V175M120 0V175M180 0V175M240 0V175M300 0V175"/></g>
-        <path d="M0 124 L18 116 L32 128 L48 92 L65 102 L82 78 L99 91 L115 62 L132 72 L148 55 L166 76 L182 65 L198 88 L215 70 L231 83 L249 48 L265 58 L283 38 L300 52 L318 26 L337 40 L360 18" fill="none" stroke="#f6d62e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M0 124 L18 116 L32 128 L48 92 L65 102 L82 78 L99 91 L115 62 L132 72 L148 55 L166 76 L182 65 L198 88 L215 70 L231 83 L249 48 L265 58 L283 38 L300 52 L318 26 L337 40 L360 18 L360 175 L0 175Z" fill="url(#unused)" opacity=".05"/>
-      </svg>
-    </div>
-    <label class="label" style="margin-top:16px">Atau muat naik screenshot carta</label>
-    <label class="upload" for="shot">＋ Pilih gambar daripada Photos / Files<input id="shot" type="file" accept="image/*"></label>
-    <img class="preview" id="preview" alt="Pratonton screenshot carta">
-    <button class="primary" id="analyze">ANALYZE CHART</button>
-  </section>
+<section class="card">
+<div class="label">KEPUTUSAN ANALISIS</div>
+<div class="signal yellow" id="signal">WAIT</div>
+<div class="muted" id="reason">Menunggu data yang mencukupi.</div>
+<div class="grid">
+<div class="stat"><small>EMA 9</small><b id="ema9">—</b></div>
+<div class="stat"><small>EMA 21</small><b id="ema21">—</b></div>
+<div class="stat"><small>RSI 14</small><b id="rsi">—</b></div>
+</div>
+<div class="grid">
+<div class="stat"><small>ENTRY RUJUKAN</small><b id="entry">—</b></div>
+<div class="stat"><small>STOP LOSS</small><b id="sl">—</b></div>
+<div class="stat"><small>TAKE PROFIT</small><b id="tp">—</b></div>
+</div>
+<p class="muted" id="risk">Paras risiko belum tersedia.</p>
+</section>
 
-  <section class="card result" id="result">
-    <div class="label">Demo result</div>
-    <div class="signal"><span class="dot" id="dot"></span><span id="direction">NEUTRAL</span></div>
-    <p id="explain">Ini hanya contoh paparan. Belum ada model analisis sebenar atau sambungan data pasaran.</p>
-    <div class="stats"><div class="stat"><small>ENTRY</small><b id="entry">—</b></div><div class="stat"><small>TAKE PROFIT</small><b>Belum ditetapkan</b></div><div class="stat"><small>STOP LOSS</small><b>Belum ditetapkan</b></div></div>
-  </section>
-
-  <p class="disclaimer">Prototaip untuk menguji reka bentuk dan aliran aplikasi. Harga serta keputusan adalah ilustrasi, bukan signal trading sebenar atau nasihat kewangan.</p>
-  <div class="nav"><b>⌂ Home</b><span>◫ Chart</span><span>◉ History</span><span>⚙ Settings</span></div>
+<p class="note">Sumber: XAUS spot/intraday API. Harga rujukan mungkin berbeza daripada Valetax XAUUSD.vxc. Analisis indikator ialah bantuan teknikal, bukan ramalan pasti. Semak spread, harga broker dan risiko sebelum berdagang. Signal tidak dijamin tepat.</p>
 </main>
+
 <script>
-const fileInput=document.getElementById('shot'), preview=document.getElementById('preview');
-fileInput.addEventListener('change',()=>{
-  const f=fileInput.files&&fileInput.files[0]; if(!f)return;
-  preview.src=URL.createObjectURL(f); preview.style.display='block';
-});
-document.getElementById('analyze').addEventListener('click',()=>{
-  const r=document.getElementById('result'); r.style.display='block';
-  document.getElementById('direction').textContent='DEMO ONLY';
-  document.getElementById('dot').style.background='#f6d62e';
-  document.getElementById('explain').textContent='Analisis sebenar belum disambungkan. Versi ini hanya menguji paparan keputusan; ia tidak membaca screenshot atau meramal harga.';
-  document.getElementById('entry').textContent='—';
-  r.scrollIntoView({behavior:'smooth',block:'nearest'});
-});
-document.getElementById('refresh').addEventListener('click',()=>{
-  document.getElementById('price').textContent='2,345.60';
-});
+const $=id=>document.getElementById(id);
+const spotURL='https://xaus.com/api/v1/spot';
+const historyURL='https://xaus.com/api/v1/intraday?symbol=xau&hours=48';
+
+function fmt(n){
+ return Number.isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+}
+function timestamp(v){
+ let n=typeof v==='number'?v:Date.parse(v);
+ if(!Number.isFinite(n))return null;
+ if(n<1e12)n*=1000;
+ return n;
+}
+function ema(values,period){
+ const k=2/(period+1);
+ let out=values[0];
+ for(let i=1;i<values.length;i++)out=values[i]*k+out*(1-k);
+ return out;
+}
+function rsi(values,period=14){
+ if(values.length<=period)return null;
+ let gains=0,losses=0;
+ for(let i=values.length-period;i<values.length;i++){
+  const d=values[i]-values[i-1];
+  if(d>0)gains+=d;else losses-=d;
+ }
+ if(losses===0)return gains===0?50:100;
+ return 100-100/(1+gains/losses);
+}
+function drawChart(values){
+ const svg=$('chart');
+ if(values.length<2){svg.innerHTML='';return;}
+ const recent=values.slice(-100);
+ const lo=Math.min(...recent),hi=Math.max(...recent);
+ const range=hi-lo||1;
+ const pts=recent.map((v,i)=>{
+  const x=i*360/(recent.length-1);
+  const y=155-(v-lo)/range*140;
+  return `${x},${y}`;
+ }).join(' ');
+ svg.innerHTML=
+ '<path d="M0 35H360 M0 85H360 M0 135H360" stroke="#28303b" fill="none"/>'+
+ `<polyline points="${pts}" fill="none" stroke="#f6d62e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+}
+async function load(){
+ $('refresh').disabled=true;
+ $('updated').textContent='Memuatkan harga dan data intraday...';
+ $('signal').textContent='WAIT';
+ $('signal').className='signal yellow';
+ $('reason').textContent='Sedang memeriksa data sebenar.';
+ $('entry').textContent='—';$('sl').textContent='—';$('tp').textContent='—';
+ try{
+  const [sr,hr]=await Promise.all([
+   fetch(spotURL,{cache:'no-store'}),
+   fetch(historyURL,{cache:'no-store'})
+  ]);
+  if(!sr.ok||!hr.ok)throw Error('Sumber data tidak tersedia.');
+  const s=await sr.json(),h=await hr.json();
+  const spot=Number(s.spot_usd_oz??s.xau?.price??s.price);
+  if(!Number.isFinite(spot)||spot<=0)throw Error('Format harga tidak dikenali.');
+  $('price').textContent='$'+fmt(spot);
+  const spotTime=timestamp(s.updated_at??s.updatedAt??s.data_state?.as_of);
+  $('updated').textContent='Harga rujukan spot · '+(spotTime?new Date(spotTime).toLocaleString('ms-MY'):'masa kemas kini tidak tersedia');
+
+  const raw=Array.isArray(h.points)?h.points:(Array.isArray(h.data)?h.data:[]);
+  const points=raw.map(p=>({
+   t:timestamp(p.t??p.timestamp??p.time),
+   p:Number(p.p??p.price??p.close)
+  })).filter(p=>p.t&&Number.isFinite(p.p)&&p.p>0).sort((a,b)=>a.t-b.t);
+
+  const unique=points.filter((p,i)=>i===0||p.t!==points[i-1].t);
+  const vals=unique.map(p=>p.p);
+  drawChart(vals);
+
+  if(unique.length){
+   const last=unique[unique.length-1];
+   const age=(Date.now()-last.t)/1000;
+   $('coverage').textContent=`${unique.length} titik data · data terakhir ${Math.max(0,Math.round(age/60))} minit lalu`;
+   if(age>20*60)throw Error('Data intraday terlalu lama. Signal dinyahaktifkan demi keselamatan.');
+  }else{
+   throw Error('Data intraday belum tersedia.');
+  }
+  if(vals.length<25)throw Error('Data belum mencukupi untuk EMA 21 dan RSI 14. Cuba lagi kemudian.');
+
+  const e9=ema(vals,9),e21=ema(vals,21),rv=rsi(vals,14);
+  $('ema9').textContent=fmt(e9);
+  $('ema21').textContent=fmt(e21);
+  $('rsi').textContent=rv===null?'—':rv.toFixed(1);
+
+  const last=vals[vals.length-1],prev=vals[vals.length-2];
+  let dir='WAIT',why='Trend belum cukup jelas untuk memberi arah.';
+  if(e9>e21&&last>e9&&rv>=50&&rv<70&&last>=prev){
+   dir='BUY';why='EMA 9 di atas EMA 21, harga di atas EMA 9 dan RSI menyokong momentum.';
+  }else if(e9<e21&&last<e9&&rv<=50&&rv>30&&last<=prev){
+   dir='SELL';why='EMA 9 di bawah EMA 21, harga di bawah EMA 9 dan RSI menyokong momentum menurun.';
+  }
+  $('signal').textContent=dir;
+  $('signal').className='signal '+(dir==='BUY'?'green':dir==='SELL'?'red':'yellow');
+  $('reason').textContent=why+' Pengiraan menggunakan titik spot intraday, bukan candle broker M5.';
+  if(dir!=='WAIT'){
+   const risk=Math.max(Math.abs(last-e21),last*0.001);
+   $('entry').textContent=fmt(last);
+   $('sl').textContent=fmt(dir==='BUY'?last-risk:last+risk);
+   $('tp').textContent=fmt(dir==='BUY'?last+2*risk:last-2*risk);
+   $('risk').textContent='Paras SL/TP ialah contoh berasaskan jarak EMA dan risiko 1:2. Ia bukan paras broker atau jaminan hasil.';
+  }else{
+   $('risk').textContent='WAIT: jangan anggap ketiadaan signal sebagai arahan untuk membuka trade.';
+  }
+ }catch(e){
+  $('price').textContent='—';
+  $('signal').textContent='WAIT';
+  $('signal').className='signal yellow';
+  $('reason').textContent=e.message||'Tidak dapat mendapatkan data. Semak sambungan internet dan cuba lagi.';
+  $('updated').textContent='Data gagal disahkan.';
+  $('coverage').textContent='Tiada signal sehingga data disahkan.';
+  $('risk').textContent='Tiada cadangan trade diberikan kerana data tidak mencukupi.';
+ }
+ $('refresh').disabled=false;
+}
+$('refresh').addEventListener('click',load);
+load();
 </script>
 </body>
 </html>
