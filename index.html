@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ms">
 <head>
@@ -8,189 +7,91 @@
 <title>Market Lens — XAUUSD</title>
 <style>
 :root{color-scheme:dark;--bg:#090b0f;--panel:#12161d;--line:#28303b;--muted:#98a3b3;--yellow:#f6d62e;--green:#35d39a;--red:#ff6473}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#f4f6fa;font:15px -apple-system,BlinkMacSystemFont,sans-serif}
-main{max-width:500px;margin:auto;padding:20px 16px 35px}
-header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 28px}
-.brand{font-weight:900;font-size:20px}.brand span{color:var(--yellow)}
-.pill{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:7px 9px;border-radius:20px}
-h1{font-size:26px;margin:0 0 7px}
-.sub{color:var(--muted);line-height:1.5;font-size:13px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:16px;margin:14px 0}
-.label{color:var(--muted);font-size:11px;letter-spacing:1px;font-weight:700}
-.price{font-size:30px;font-weight:850;margin:8px 0}
-.muted{color:var(--muted);font-size:12px;line-height:1.5}
-button{width:100%;padding:14px;border:0;border-radius:12px;background:var(--yellow);color:#171606;font-weight:850;font-size:14px;margin-top:12px}
-.chart{width:100%;height:170px;display:block;margin-top:15px}
-.signal{font-size:27px;font-weight:900;margin:12px 0}
-.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
-.stat{background:#191f28;border-radius:11px;padding:11px;min-width:0}
-.stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
-.stat b{font-size:13px;overflow-wrap:anywhere}
-.note{font-size:11px;color:var(--muted);line-height:1.6;text-align:center;margin-top:20px}
-hr{border:0;border-top:1px solid var(--line);margin:15px 0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f4f6fa;font:15px -apple-system,BlinkMacSystemFont,sans-serif}
+main{max-width:500px;margin:auto;padding:20px 16px 35px}header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 28px}
+.brand{font-weight:900;font-size:20px}.brand span{color:var(--yellow)}.pill{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:7px 9px;border-radius:20px}
+h1{font-size:26px;margin:0 0 7px}.sub{color:var(--muted);line-height:1.5;font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:16px;margin:14px 0}.label{color:var(--muted);font-size:11px;letter-spacing:1px;font-weight:700}
+.price{font-size:30px;font-weight:850;margin:8px 0}.muted{color:var(--muted);font-size:12px;line-height:1.5}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:var(--yellow);color:#171606;font-weight:850;font-size:14px;margin-top:12px}button:disabled{opacity:.55}
+.chart{width:100%;height:170px;display:block;margin-top:15px}.signal{font-size:27px;font-weight:900;margin:12px 0}
+.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.stat{background:#191f28;border-radius:11px;padding:11px;min-width:0}.stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}.stat b{font-size:13px;overflow-wrap:anywhere}
+.note{font-size:11px;color:var(--muted);line-height:1.6;text-align:center;margin-top:20px}hr{border:0;border-top:1px solid var(--line);margin:15px 0}
 </style>
 </head>
-<body>
-<main>
-<header><div class="brand">MARKET <span>LENS</span></div><div class="pill">XAUUSD · LIVE DATA</div></header>
+<body><main>
+<header><div class="brand">MARKET <span>LENS</span></div><div class="pill">XAUUSD · SPOT DATA</div></header>
 <h1>Analisis pasaran emas</h1>
-<p class="sub">Harga spot emas, trend EMA dan RSI berdasarkan siri harga intraday.</p>
-
+<p class="sub">EMA 9, EMA 21 dan RSI 14 dengan penapisan momentum. Data ini ialah siri harga spot intraday, bukan candle broker M5.</p>
 <section class="card">
-<div class="label">HARGA SPOT EMAS · USD/OUNCE</div>
-<div class="price" id="price">Memuatkan...</div>
-<div class="muted" id="updated">Menyambung kepada sumber data...</div>
-<hr>
-<div class="label">CARTA HARGA INTRADAY</div>
-<svg id="chart" class="chart" viewBox="0 0 360 170" preserveAspectRatio="none"></svg>
-<div class="muted" id="coverage">Memeriksa data sejarah...</div>
-<button id="refresh">KEMAS KINI DATA</button>
+<div class="label">HARGA SPOT EMAS · USD/OUNCE</div><div class="price" id="price">Memuatkan...</div>
+<div class="muted" id="updated">Menyambung kepada sumber data...</div><hr>
+<div class="label">CARTA HARGA INTRADAY</div><svg id="chart" class="chart" viewBox="0 0 360 170" preserveAspectRatio="none"></svg>
+<div class="muted" id="coverage">Memeriksa data sejarah...</div><button id="refresh">KEMAS KINI DATA</button>
 </section>
-
 <section class="card">
-<div class="label">KEPUTUSAN ANALISIS</div>
-<div class="signal yellow" id="signal">WAIT</div>
+<div class="label">KEPUTUSAN ANALISIS</div><div class="signal yellow" id="signal">WAIT</div>
 <div class="muted" id="reason">Menunggu data yang mencukupi.</div>
-<div class="grid">
-<div class="stat"><small>EMA 9</small><b id="ema9">—</b></div>
-<div class="stat"><small>EMA 21</small><b id="ema21">—</b></div>
-<div class="stat"><small>RSI 14</small><b id="rsi">—</b></div>
-</div>
-<div class="grid">
-<div class="stat"><small>ENTRY RUJUKAN</small><b id="entry">—</b></div>
-<div class="stat"><small>STOP LOSS</small><b id="sl">—</b></div>
-<div class="stat"><small>TAKE PROFIT</small><b id="tp">—</b></div>
-</div>
+<div class="grid"><div class="stat"><small>EMA 9</small><b id="ema9">—</b></div><div class="stat"><small>EMA 21</small><b id="ema21">—</b></div><div class="stat"><small>RSI 14</small><b id="rsi">—</b></div></div>
+<div class="grid"><div class="stat"><small>ENTRY RUJUKAN</small><b id="entry">—</b></div><div class="stat"><small>STOP LOSS</small><b id="sl">—</b></div><div class="stat"><small>TAKE PROFIT</small><b id="tp">—</b></div></div>
 <p class="muted" id="risk">Paras risiko belum tersedia.</p>
 </section>
-
-<p class="note">Sumber: XAUS spot/intraday API. Harga rujukan mungkin berbeza daripada Valetax XAUUSD.vxc. Analisis indikator ialah bantuan teknikal, bukan ramalan pasti. Semak spread, harga broker dan risiko sebelum berdagang. Signal tidak dijamin tepat.</p>
+<p class="note">Signal ialah bantuan analisis, bukan arahan pasti untuk berdagang. Harga spot mungkin berbeza daripada Valetax XAUUSD.vxc. Tiada jaminan keuntungan. Semak spread, spesifikasi pip dan risiko broker sebelum membuat keputusan.</p>
 </main>
-
 <script>
 const $=id=>document.getElementById(id);
 const spotURL='https://xaus.com/api/v1/spot';
 const historyURL='https://xaus.com/api/v1/intraday?symbol=xau&hours=48';
-
-function fmt(n){
- return Number.isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
-}
-function timestamp(v){
- let n=typeof v==='number'?v:Date.parse(v);
- if(!Number.isFinite(n))return null;
- if(n<1e12)n*=1000;
- return n;
-}
-function ema(values,period){
- const k=2/(period+1);
- let out=values[0];
- for(let i=1;i<values.length;i++)out=values[i]*k+out*(1-k);
- return out;
-}
-function rsi(values,period=14){
- if(values.length<=period)return null;
- let gains=0,losses=0;
- for(let i=values.length-period;i<values.length;i++){
-  const d=values[i]-values[i-1];
-  if(d>0)gains+=d;else losses-=d;
- }
- if(losses===0)return gains===0?50:100;
- return 100-100/(1+gains/losses);
-}
-function drawChart(values){
- const svg=$('chart');
- if(values.length<2){svg.innerHTML='';return;}
- const recent=values.slice(-100);
- const lo=Math.min(...recent),hi=Math.max(...recent);
- const range=hi-lo||1;
- const pts=recent.map((v,i)=>{
-  const x=i*360/(recent.length-1);
-  const y=155-(v-lo)/range*140;
-  return `${x},${y}`;
- }).join(' ');
- svg.innerHTML=
- '<path d="M0 35H360 M0 85H360 M0 135H360" stroke="#28303b" fill="none"/>'+
- `<polyline points="${pts}" fill="none" stroke="#f6d62e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
-}
+function fmt(n){return Number.isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';}
+function timestamp(v){let n=typeof v==='number'?v:Date.parse(v);if(!Number.isFinite(n))return null;if(n<1e12)n*=1000;return n;}
+function emaSeries(values,period){const k=2/(period+1),out=[];let current=values[0];out.push(current);for(let i=1;i<values.length;i++){current=values[i]*k+current*(1-k);out.push(current);}return out;}
+function rsi(values,period=14){if(values.length<=period)return null;let gains=0,losses=0;for(let i=values.length-period;i<values.length;i++){const d=values[i]-values[i-1];if(d>0)gains+=d;else losses-=d;}if(losses===0)return gains===0?50:100;return 100-100/(1+gains/losses);}
+function drawChart(values){const svg=$('chart');if(values.length<2){svg.innerHTML='';return;}const recent=values.slice(-100),lo=Math.min(...recent),hi=Math.max(...recent),range=hi-lo||1;const pts=recent.map((v,i)=>`${i*360/(recent.length-1)},${155-(v-lo)/range*140}`).join(' ');svg.innerHTML='<path d="M0 35H360 M0 85H360 M0 135H360" stroke="#28303b" fill="none"/>'+ `<polyline points="${pts}" fill="none" stroke="#f6d62e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;}
+function resetSignal(){$('signal').textContent='WAIT';$('signal').className='signal yellow';$('entry').textContent='—';$('sl').textContent='—';$('tp').textContent='—';}
 async function load(){
- $('refresh').disabled=true;
- $('updated').textContent='Memuatkan harga dan data intraday...';
- $('signal').textContent='WAIT';
- $('signal').className='signal yellow';
- $('reason').textContent='Sedang memeriksa data sebenar.';
- $('entry').textContent='—';$('sl').textContent='—';$('tp').textContent='—';
+ $('refresh').disabled=true;$('updated').textContent='Memuatkan harga dan data intraday...';$('reason').textContent='Sedang memeriksa data.';resetSignal();
  try{
-  const [sr,hr]=await Promise.all([
-   fetch(spotURL,{cache:'no-store'}),
-   fetch(historyURL,{cache:'no-store'})
-  ]);
-  if(!sr.ok||!hr.ok)throw Error('Sumber data tidak tersedia.');
-  const s=await sr.json(),h=await hr.json();
-  const spot=Number(s.spot_usd_oz??s.xau?.price??s.price);
+  const [sr,hr]=await Promise.all([fetch(spotURL,{cache:'no-store'}),fetch(historyURL,{cache:'no-store'})]);
+  if(!sr.ok||!hr.ok)throw Error('Sumber data tidak tersedia. Cuba lagi kemudian.');
+  const s=await sr.json(),h=await hr.json(),spot=Number(s.spot_usd_oz??s.xau?.price??s.price);
   if(!Number.isFinite(spot)||spot<=0)throw Error('Format harga tidak dikenali.');
-  $('price').textContent='$'+fmt(spot);
-  const spotTime=timestamp(s.updated_at??s.updatedAt??s.data_state?.as_of);
+  $('price').textContent='$'+fmt(spot);const spotTime=timestamp(s.updated_at??s.updatedAt??s.data_state?.as_of);
   $('updated').textContent='Harga rujukan spot · '+(spotTime?new Date(spotTime).toLocaleString('ms-MY'):'masa kemas kini tidak tersedia');
-
   const raw=Array.isArray(h.points)?h.points:(Array.isArray(h.data)?h.data:[]);
-  const points=raw.map(p=>({
-   t:timestamp(p.t??p.timestamp??p.time),
-   p:Number(p.p??p.price??p.close)
-  })).filter(p=>p.t&&Number.isFinite(p.p)&&p.p>0).sort((a,b)=>a.t-b.t);
-
-  const unique=points.filter((p,i)=>i===0||p.t!==points[i-1].t);
-  const vals=unique.map(p=>p.p);
-  drawChart(vals);
-
-  if(unique.length){
-   const last=unique[unique.length-1];
-   const age=(Date.now()-last.t)/1000;
-   $('coverage').textContent=`${unique.length} titik data · data terakhir ${Math.max(0,Math.round(age/60))} minit lalu`;
-   if(age>20*60)throw Error('Data intraday terlalu lama. Signal dinyahaktifkan demi keselamatan.');
-  }else{
-   throw Error('Data intraday belum tersedia.');
-  }
-  if(vals.length<25)throw Error('Data belum mencukupi untuk EMA 21 dan RSI 14. Cuba lagi kemudian.');
-
-  const e9=ema(vals,9),e21=ema(vals,21),rv=rsi(vals,14);
-  $('ema9').textContent=fmt(e9);
-  $('ema21').textContent=fmt(e21);
-  $('rsi').textContent=rv===null?'—':rv.toFixed(1);
-
-  const last=vals[vals.length-1],prev=vals[vals.length-2];
-  let dir='WAIT',why='Trend belum cukup jelas untuk memberi arah.';
-  if(e9>e21&&last>e9&&rv>=50&&rv<70&&last>=prev){
-   dir='BUY';why='EMA 9 di atas EMA 21, harga di atas EMA 9 dan RSI menyokong momentum.';
-  }else if(e9<e21&&last<e9&&rv<=50&&rv>30&&last<=prev){
-   dir='SELL';why='EMA 9 di bawah EMA 21, harga di bawah EMA 9 dan RSI menyokong momentum menurun.';
-  }
-  $('signal').textContent=dir;
-  $('signal').className='signal '+(dir==='BUY'?'green':dir==='SELL'?'red':'yellow');
-  $('reason').textContent=why+' Pengiraan menggunakan titik spot intraday, bukan candle broker M5.';
+  const points=raw.map(p=>({t:timestamp(p.t??p.timestamp??p.time),p:Number(p.p??p.price??p.close)})).filter(p=>p.t&&Number.isFinite(p.p)&&p.p>0).sort((a,b)=>a.t-b.t);
+  const unique=points.filter((p,i)=>i===0||p.t!==points[i-1].t),vals=unique.map(p=>p.p);drawChart(vals);
+  if(!unique.length)throw Error('Data intraday belum tersedia.');
+  const lastPoint=unique[unique.length-1],age=(Date.now()-lastPoint.t)/1000;
+  $('coverage').textContent=`${unique.length} titik data · data terakhir ${Math.max(0,Math.round(age/60))} minit lalu`;
+  if(age>20*60)throw Error('Data intraday terlalu lama. Signal dinyahaktifkan demi keselamatan.');
+  if(vals.length<25)throw Error('Data belum mencukupi untuk EMA 21 dan RSI 14.');
+  const e9s=emaSeries(vals,9),e21s=emaSeries(vals,21),e9=e9s[e9s.length-1],e21=e21s[e21s.length-1],rv=rsi(vals,14);
+  $('ema9').textContent=fmt(e9);$('ema21').textContent=fmt(e21);$('rsi').textContent=rv===null?'—':rv.toFixed(1);
+  const last=vals[vals.length-1],prev=vals[vals.length-2],prevE9=e9s[e9s.length-2];
+  const trendUp=e9>e21,trendDown=e9<e21,mom=last-prev;
+  let dir='WAIT',why='Isyarat bercampur; tunggu arah lebih jelas.';
+  const buyScore=(trendUp?1:0)+(last>e9?1:0)+(mom>0?1:0)+(rv>=50&&rv<76?1:0)+(e9>=prevE9?1:0);
+  const sellScore=(trendDown?1:0)+(last<e9?1:0)+(mom<0?1:0)+(rv<=50&&rv>24?1:0)+(e9<=prevE9?1:0);
+  if(buyScore>=4&&buyScore>sellScore){dir='BUY';why='Momentum menaik disokong kebanyakan syarat EMA, RSI dan perubahan harga.';}
+  else if(sellScore>=4&&sellScore>buyScore){dir='SELL';why='Momentum menurun disokong kebanyakan syarat EMA, RSI dan perubahan harga.';}
+  else if(buyScore>=3&&buyScore>sellScore&&rv>=53){dir='BUY';why='Momentum menaik sederhana; semak carta broker sebelum bertindak.';}
+  else if(sellScore>=3&&sellScore>buyScore&&rv<=47){dir='SELL';why='Momentum menurun sederhana; semak carta broker sebelum bertindak.';}
+  $('signal').textContent=dir;$('signal').className='signal '+(dir==='BUY'?'green':dir==='SELL'?'red':'yellow');
+  $('reason').textContent=why+' Analisis titik spot intraday, bukan pengesahan candle M5 Valetax.';
   if(dir!=='WAIT'){
-   const risk=Math.max(Math.abs(last-e21),last*0.001);
-   $('entry').textContent=fmt(last);
-   $('sl').textContent=fmt(dir==='BUY'?last-risk:last+risk);
-   $('tp').textContent=fmt(dir==='BUY'?last+2*risk:last-2*risk);
-   $('risk').textContent='Paras SL/TP ialah contoh berasaskan jarak EMA dan risiko 1:2. Ia bukan paras broker atau jaminan hasil.';
-  }else{
-   $('risk').textContent='WAIT: jangan anggap ketiadaan signal sebagai arahan untuk membuka trade.';
-  }
+   const volatility=Math.abs(last-prev),riskDistance=Math.max(Math.abs(e9-e21),volatility*2,last*0.0008);
+   $('entry').textContent=fmt(last);$('sl').textContent=fmt(dir==='BUY'?last-riskDistance:last+riskDistance);
+   $('tp').textContent=fmt(dir==='BUY'?last+riskDistance*1.5:last-riskDistance*1.5);
+   $('risk').textContent='Entry ialah titik spot terakhir. TP/SL indikatif menggunakan jarak dinamik; bukan harga broker atau jaminan hasil.';
+  }else $('risk').textContent='WAIT: syarat belum sehaluan. Jangan buka trade semata-mata kerana mahu signal keluar.';
  }catch(e){
-  $('price').textContent='—';
-  $('signal').textContent='WAIT';
-  $('signal').className='signal yellow';
-  $('reason').textContent=e.message||'Tidak dapat mendapatkan data. Semak sambungan internet dan cuba lagi.';
-  $('updated').textContent='Data gagal disahkan.';
-  $('coverage').textContent='Tiada signal sehingga data disahkan.';
-  $('risk').textContent='Tiada cadangan trade diberikan kerana data tidak mencukupi.';
+  $('price').textContent='—';resetSignal();$('reason').textContent=e.message||'Tidak dapat mendapatkan data. Semak internet dan cuba lagi.';
+  $('updated').textContent='Data gagal disahkan.';$('coverage').textContent='Tiada signal sehingga data disahkan.';
+  $('risk').textContent='Tiada cadangan trade kerana data tidak mencukupi atau sudah lama.';
  }
  $('refresh').disabled=false;
 }
-$('refresh').addEventListener('click',load);
-load();
+$('refresh').addEventListener('click',load);load();
 </script>
-</body>
-</html>
+</body></html>
