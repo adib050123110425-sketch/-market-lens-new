@@ -1,97 +1,251 @@
+
 <!doctype html>
 <html lang="ms">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090b0f">
-<title>Market Lens — XAUUSD</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070b19">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>BlueGold M1</title>
 <style>
-:root{color-scheme:dark;--bg:#090b0f;--panel:#12161d;--line:#28303b;--muted:#98a3b3;--yellow:#f6d62e;--green:#35d39a;--red:#ff6473}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f4f6fa;font:15px -apple-system,BlinkMacSystemFont,sans-serif}
-main{max-width:500px;margin:auto;padding:20px 16px 35px}header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 28px}
-.brand{font-weight:900;font-size:20px}.brand span{color:var(--yellow)}.pill{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:7px 9px;border-radius:20px}
-h1{font-size:26px;margin:0 0 7px}.sub{color:var(--muted);line-height:1.5;font-size:13px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:16px;margin:14px 0}.label{color:var(--muted);font-size:11px;letter-spacing:1px;font-weight:700}
-.price{font-size:30px;font-weight:850;margin:8px 0}.muted{color:var(--muted);font-size:12px;line-height:1.5}
-button{width:100%;padding:14px;border:0;border-radius:12px;background:var(--yellow);color:#171606;font-weight:850;font-size:14px;margin-top:12px}button:disabled{opacity:.55}
-.chart{width:100%;height:170px;display:block;margin-top:15px}.signal{font-size:27px;font-weight:900;margin:12px 0}
-.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
-.stat{background:#191f28;border-radius:11px;padding:11px;min-width:0}.stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}.stat b{font-size:13px;overflow-wrap:anywhere}
-.note{font-size:11px;color:var(--muted);line-height:1.6;text-align:center;margin-top:20px}hr{border:0;border-top:1px solid var(--line);margin:15px 0}
+:root{--bg:#070b19;--panel:#101a35;--line:#203763;--blue:#37d7ff;--green:#2ef2a3;--red:#ff537d;--gold:#ffd66b;--muted:#8fa5ce;--text:#eef5ff}
+*{box-sizing:border-box}
+body{margin:0 auto;background:radial-gradient(ellipse at top,#101d42,var(--bg) 65%);color:var(--text);font:14px -apple-system,BlinkMacSystemFont,sans-serif;padding:env(safe-area-inset-top) 14px 25px;max-width:680px}
+.top,.price-row,.head,.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top{padding:18px 2px}
+h1{font-size:19px;letter-spacing:1px;margin:0}
+small,.muted,.sub,.note{color:var(--muted)}
+small{font-size:10px;letter-spacing:2px}
+.pill{color:var(--gold);border:1px solid #694d13;border-radius:20px;padding:7px;font-size:10px}
+.note,.card{border:1px solid var(--line);border-radius:16px;background:#101a35eF;padding:14px;margin-bottom:12px}
+.note{font-size:12px;line-height:1.5;color:#bed4ff}
+.head{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.price{font-size:30px;font-weight:800}
+.sub{font-size:11px;margin-top:5px}
+.signal{padding:10px 15px;border:1px solid;border-radius:12px;font-weight:900;font-size:17px}
+.wait{color:var(--gold);border-color:#98752a;background:#40300f66}
+.buy{color:var(--green);border-color:#1cbb86;background:#0d493a77}
+.sell{color:var(--red);border-color:#d53d6d;background:#4d183477}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.metric,.level{background:#0b142c;border:1px solid #1d3159;border-radius:11px;padding:11px}
+.metric label,.level span{display:block;font-size:10px;color:var(--muted);margin-bottom:7px}
+.metric strong,.level strong{font-size:15px}
+.chart{height:220px;width:100%}
+canvas{width:100%;height:100%;display:block}
+.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--blue)}
+.levels{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button{font:inherit;cursor:pointer}
+.primary{background:linear-gradient(90deg,#2bdcff,#5579ff);color:#061023;border:0;font-weight:900;border-radius:12px;padding:13px}
+.secondary{background:#111f40;color:white;border:1px solid #2b4778;border-radius:10px;padding:10px}
+.actions{display:flex;gap:8px}.actions>*{flex:1}
+.row{padding:10px 0;border-bottom:1px solid #1a2a4a;font-size:12px}
+.row:last-child{border:0}
+input,select{max-width:120px;background:#0a1227;color:white;border:1px solid #29436e;border-radius:8px;padding:8px}
+.small{font-size:11px;line-height:1.5;color:var(--muted)}
+.history-item{padding:9px 0;border-bottom:1px solid #1a2a4a;display:flex;justify-content:space-between;gap:8px;font-size:11px}
+.foot{text-align:center;color:#7186ae;font-size:10px;padding:10px}
 </style>
 </head>
-<body><main>
-<header><div class="brand">MARKET <span>LENS</span></div><div class="pill">XAUUSD · SPOT DATA</div></header>
-<h1>Analisis pasaran emas</h1>
-<p class="sub">EMA 9, EMA 21 dan RSI 14 dengan penapisan momentum. Data ini ialah siri harga spot intraday, bukan candle broker M5.</p>
+<body>
+<header class="top">
+ <div><h1>✦ BLUEGOLD <span class="blue">M1</span></h1><small>GOLD SIGNAL LAB</small></div>
+ <span class="pill">DEMO</span>
+</header>
+
+<div class="note"><b>MODE DEMO.</b> Harga dan candle sekarang ialah simulasi, bukan harga live. Jangan gunakan signal ini untuk trade sebenar.</div>
+
 <section class="card">
-<div class="label">HARGA SPOT EMAS · USD/OUNCE</div><div class="price" id="price">Memuatkan...</div>
-<div class="muted" id="updated">Menyambung kepada sumber data...</div><hr>
-<div class="label">CARTA HARGA INTRADAY</div><svg id="chart" class="chart" viewBox="0 0 360 170" preserveAspectRatio="none"></svg>
-<div class="muted" id="coverage">Memeriksa data sejarah...</div><button id="refresh">KEMAS KINI DATA</button>
+ <div class="head"><span>GOLD / XAUUSD</span><span id="feed">DATA DEMO</span></div>
+ <div class="price-row">
+  <div><div class="price" id="price">2673.45</div><div class="sub">Harga simulasi · M1</div></div>
+  <div id="signal" class="signal wait">WAIT</div>
+ </div>
+ <br>
+ <div class="grid">
+  <div class="metric"><label>EMA 9</label><strong id="ema9">—</strong></div>
+  <div class="metric"><label>EMA 21</label><strong id="ema21">—</strong></div>
+  <div class="metric"><label>RSI 14</label><strong id="rsi">—</strong></div>
+  <div class="metric"><label>CANDLE TERAKHIR</label><strong id="time">—</strong></div>
+ </div>
 </section>
+
 <section class="card">
-<div class="label">KEPUTUSAN ANALISIS</div><div class="signal yellow" id="signal">WAIT</div>
-<div class="muted" id="reason">Menunggu data yang mencukupi.</div>
-<div class="grid"><div class="stat"><small>EMA 9</small><b id="ema9">—</b></div><div class="stat"><small>EMA 21</small><b id="ema21">—</b></div><div class="stat"><small>RSI 14</small><b id="rsi">—</b></div></div>
-<div class="grid"><div class="stat"><small>ENTRY RUJUKAN</small><b id="entry">—</b></div><div class="stat"><small>STOP LOSS</small><b id="sl">—</b></div><div class="stat"><small>TAKE PROFIT</small><b id="tp">—</b></div></div>
-<p class="muted" id="risk">Paras risiko belum tersedia.</p>
+ <div class="head"><span>Carta candle M1</span><span class="blue">EMA 9/21</span></div>
+ <div class="chart"><canvas id="chart"></canvas></div>
+ <p class="small">Hijau = candle naik · Merah = candle turun</p>
 </section>
-<p class="note">Signal ialah bantuan analisis, bukan arahan pasti untuk berdagang. Harga spot mungkin berbeza daripada Valetax XAUUSD.vxc. Tiada jaminan keuntungan. Semak spread, spesifikasi pip dan risiko broker sebelum membuat keputusan.</p>
-</main>
+
+<section class="card">
+ <div class="head"><span>Cadangan trade demo</span><span id="direction" class="blue">Menunggu</span></div>
+ <div class="levels">
+  <div class="level"><span>ENTRY</span><strong id="entry">—</strong></div>
+  <div class="level"><span>STOP LOSS</span><strong id="sl" class="red">—</strong></div>
+  <div class="level"><span>TAKE PROFIT 1</span><strong id="tp1" class="green">—</strong></div>
+  <div class="level"><span>TAKE PROFIT 2</span><strong id="tp2" class="green">—</strong></div>
+  <div class="level"><span>TAKE PROFIT 3</span><strong id="tp3" class="green">—</strong></div>
+  <div class="level"><span>RISIKO : GANJARAN</span><strong>1 : 2</strong></div>
+ </div>
+ <p class="small" id="signalNote">Signal hanya berdasarkan simulasi.</p>
+</section>
+
+<section class="card">
+ <div class="head"><span>Kawalan risiko</span><span class="blue">Kalkulator</span></div>
+ <div class="row"><label>Baki akaun (USD)</label><input id="balance" type="number" value="100" min="1"></div>
+ <div class="row"><label>Risiko setiap trade</label><select id="risk"><option value=".5">0.5%</option><option value="1" selected>1%</option><option value="2">2%</option></select></div>
+ <div class="row"><label>Jarak SL (harga)</label><input id="distance" type="number" value="2.5" min=".1" step=".1"></div>
+ <div class="row"><label>Risiko maksimum</label><strong id="cash" class="blue">$1.00</strong></div>
+ <div class="row"><label>Saiz posisi anggaran</label><strong id="size">0.40 unit</strong></div>
+ <p class="small">Anggaran matematik sahaja, bukan pengiraan lot MT5 Valetax. Sahkan spesifikasi kontrak broker.</p>
+</section>
+
+<section class="card">
+ <div class="head"><span>Notifikasi</span><span id="permission">Belum dibenarkan</span></div>
+ <p class="small">Notifikasi setempat hanya dicuba apabila halaman terbuka. Push notification ketika app ditutup belum disediakan.</p>
+ <div class="actions"><button class="primary" id="enable">Benarkan notifikasi</button><button class="secondary" id="test">Uji</button></div>
+ <div class="row"><label>Signal BUY / SELL</label><input id="signalAlert" type="checkbox" checked></div>
+ <div class="row"><label>TP tercapai</label><input id="tpAlert" type="checkbox" checked></div>
+ <div class="row"><label>SL tercapai</label><input id="slAlert" type="checkbox" checked></div>
+</section>
+
+<section class="card">
+ <div class="head"><span>Log signal</span><button id="clear" class="secondary">Kosongkan</button></div>
+ <div id="history" class="small">Belum ada signal.</div>
+</section>
+
+<div class="foot">BLUEGOLD M1 · Prototaip sahaja · Tiada sambungan MT5 · Tiada jaminan keuntungan</div>
+
 <script>
+(()=>{
+'use strict';
 const $=id=>document.getElementById(id);
-const spotURL='https://xaus.com/api/v1/spot';
-const historyURL='https://xaus.com/api/v1/intraday?symbol=xau&hours=48';
-function fmt(n){return Number.isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';}
-function timestamp(v){let n=typeof v==='number'?v:Date.parse(v);if(!Number.isFinite(n))return null;if(n<1e12)n*=1000;return n;}
-function emaSeries(values,period){const k=2/(period+1),out=[];let current=values[0];out.push(current);for(let i=1;i<values.length;i++){current=values[i]*k+current*(1-k);out.push(current);}return out;}
-function rsi(values,period=14){if(values.length<=period)return null;let gains=0,losses=0;for(let i=values.length-period;i<values.length;i++){const d=values[i]-values[i-1];if(d>0)gains+=d;else losses-=d;}if(losses===0)return gains===0?50:100;return 100-100/(1+gains/losses);}
-function drawChart(values){const svg=$('chart');if(values.length<2){svg.innerHTML='';return;}const recent=values.slice(-100),lo=Math.min(...recent),hi=Math.max(...recent),range=hi-lo||1;const pts=recent.map((v,i)=>`${i*360/(recent.length-1)},${155-(v-lo)/range*140}`).join(' ');svg.innerHTML='<path d="M0 35H360 M0 85H360 M0 135H360" stroke="#28303b" fill="none"/>'+ `<polyline points="${pts}" fill="none" stroke="#f6d62e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;}
-function resetSignal(){$('signal').textContent='WAIT';$('signal').className='signal yellow';$('entry').textContent='—';$('sl').textContent='—';$('tp').textContent='—';}
-async function load(){
- $('refresh').disabled=true;$('updated').textContent='Memuatkan harga dan data intraday...';$('reason').textContent='Sedang memeriksa data.';resetSignal();
- try{
-  const [sr,hr]=await Promise.all([fetch(spotURL,{cache:'no-store'}),fetch(historyURL,{cache:'no-store'})]);
-  if(!sr.ok||!hr.ok)throw Error('Sumber data tidak tersedia. Cuba lagi kemudian.');
-  const s=await sr.json(),h=await hr.json(),spot=Number(s.spot_usd_oz??s.xau?.price??s.price);
-  if(!Number.isFinite(spot)||spot<=0)throw Error('Format harga tidak dikenali.');
-  $('price').textContent='$'+fmt(spot);const spotTime=timestamp(s.updated_at??s.updatedAt??s.data_state?.as_of);
-  $('updated').textContent='Harga rujukan spot · '+(spotTime?new Date(spotTime).toLocaleString('ms-MY'):'masa kemas kini tidak tersedia');
-  const raw=Array.isArray(h.points)?h.points:(Array.isArray(h.data)?h.data:[]);
-  const points=raw.map(p=>({t:timestamp(p.t??p.timestamp??p.time),p:Number(p.p??p.price??p.close)})).filter(p=>p.t&&Number.isFinite(p.p)&&p.p>0).sort((a,b)=>a.t-b.t);
-  const unique=points.filter((p,i)=>i===0||p.t!==points[i-1].t),vals=unique.map(p=>p.p);drawChart(vals);
-  if(!unique.length)throw Error('Data intraday belum tersedia.');
-  const lastPoint=unique[unique.length-1],age=(Date.now()-lastPoint.t)/1000;
-  $('coverage').textContent=`${unique.length} titik data · data terakhir ${Math.max(0,Math.round(age/60))} minit lalu`;
-  if(age>20*60)throw Error('Data intraday terlalu lama. Signal dinyahaktifkan demi keselamatan.');
-  if(vals.length<25)throw Error('Data belum mencukupi untuk EMA 21 dan RSI 14.');
-  const e9s=emaSeries(vals,9),e21s=emaSeries(vals,21),e9=e9s[e9s.length-1],e21=e21s[e21s.length-1],rv=rsi(vals,14);
-  $('ema9').textContent=fmt(e9);$('ema21').textContent=fmt(e21);$('rsi').textContent=rv===null?'—':rv.toFixed(1);
-  const last=vals[vals.length-1],prev=vals[vals.length-2],prevE9=e9s[e9s.length-2];
-  const trendUp=e9>e21,trendDown=e9<e21,mom=last-prev;
-  let dir='WAIT',why='Isyarat bercampur; tunggu arah lebih jelas.';
-  const buyScore=(trendUp?1:0)+(last>e9?1:0)+(mom>0?1:0)+(rv>=50&&rv<76?1:0)+(e9>=prevE9?1:0);
-  const sellScore=(trendDown?1:0)+(last<e9?1:0)+(mom<0?1:0)+(rv<=50&&rv>24?1:0)+(e9<=prevE9?1:0);
-  if(buyScore>=4&&buyScore>sellScore){dir='BUY';why='Momentum menaik disokong kebanyakan syarat EMA, RSI dan perubahan harga.';}
-  else if(sellScore>=4&&sellScore>buyScore){dir='SELL';why='Momentum menurun disokong kebanyakan syarat EMA, RSI dan perubahan harga.';}
-  else if(buyScore>=3&&buyScore>sellScore&&rv>=53){dir='BUY';why='Momentum menaik sederhana; semak carta broker sebelum bertindak.';}
-  else if(sellScore>=3&&sellScore>buyScore&&rv<=47){dir='SELL';why='Momentum menurun sederhana; semak carta broker sebelum bertindak.';}
-  $('signal').textContent=dir;$('signal').className='signal '+(dir==='BUY'?'green':dir==='SELL'?'red':'yellow');
-  $('reason').textContent=why+' Analisis titik spot intraday, bukan pengesahan candle M5 Valetax.';
-  if(dir!=='WAIT'){
-   const volatility=Math.abs(last-prev),riskDistance=Math.max(Math.abs(e9-e21),volatility*2,last*0.0008);
-   $('entry').textContent=fmt(last);$('sl').textContent=fmt(dir==='BUY'?last-riskDistance:last+riskDistance);
-   $('tp').textContent=fmt(dir==='BUY'?last+riskDistance*1.5:last-riskDistance*1.5);
-   $('risk').textContent='Entry ialah titik spot terakhir. TP/SL indikatif menggunakan jarak dinamik; bukan harga broker atau jaminan hasil.';
-  }else $('risk').textContent='WAIT: syarat belum sehaluan. Jangan buka trade semata-mata kerana mahu signal keluar.';
- }catch(e){
-  $('price').textContent='—';resetSignal();$('reason').textContent=e.message||'Tidak dapat mendapatkan data. Semak internet dan cuba lagi.';
-  $('updated').textContent='Data gagal disahkan.';$('coverage').textContent='Tiada signal sehingga data disahkan.';
-  $('risk').textContent='Tiada cadangan trade kerana data tidak mencukupi atau sudah lama.';
+const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+let candles=[],lastSignal='WAIT',trade=null;
+let seed=81731;
+const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+function makeCandles(){
+ let p=2673.45;
+ for(let i=0;i<70;i++){
+  const o=p,c=o+(random()-.49)*1.5;
+  candles.push({o,c,h:Math.max(o,c)+random()*.45,l:Math.min(o,c)-random()*.45,t:Date.now()-(70-i)*60000});
+  p=c;
  }
- $('refresh').disabled=false;
 }
-$('refresh').addEventListener('click',load);load();
+function ema(a,n){
+ const k=2/(n+1),out=[];
+ a.forEach((v,i)=>out.push(i?v*k+out[i-1]*(1-k):v));
+ return out;
+}
+function rsi(a,n=14){
+ if(a.length<n+1)return 50;
+ let g=0,l=0;
+ for(let i=a.length-n;i<a.length;i++){
+  const d=a[i]-a[i-1];if(d>0)g+=d;else l-=d;
+ }
+ return l===0?100:100-100/(1+g/l);
+}
+function log(title,detail){
+ if($('history').classList.contains('small')){$('history').className='';$('history').textContent='';}
+ const d=document.createElement('div');d.className='history-item';
+ const a=document.createElement('span');a.textContent=title+' · '+new Date().toLocaleTimeString();
+ const b=document.createElement('b');b.textContent=detail;
+ d.append(a,b);$('history').prepend(d);
+}
+function notify(title,body){
+ if('Notification'in window&&Notification.permission==='granted'){
+  try{new Notification(title,{body})}catch(e){}
+ }
+}
+function riskCalc(){
+ const balance=Math.max(0,Number($('balance').value)||0);
+ const risk=Number($('risk').value)||1;
+ const dist=Math.max(.01,Number($('distance').value)||2.5);
+ const cash=balance*risk/100;
+ $('cash').textContent='$'+cash.toFixed(2);
+ $('size').textContent=(cash/dist).toFixed(2)+' unit';
+}
+function draw(e9,e21){
+ const canvas=$('chart'),r=canvas.getBoundingClientRect(),dpr=devicePixelRatio||1;
+ canvas.width=Math.max(1,r.width*dpr);canvas.height=Math.max(1,r.height*dpr);
+ const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+ const w=r.width,h=r.height,view=candles.slice(-48);
+ const vals=view.flatMap(x=>[x.h,x.l]),min=Math.min(...vals)-.3,max=Math.max(...vals)+.3,range=max-min||1;
+ const y=p=>h-12-(p-min)/range*(h-24),step=w/view.length,cw=Math.max(3,step*.48);
+ ctx.strokeStyle='#1b2c4e';
+ for(let i=0;i<5;i++){let yy=10+i*(h-20)/4;ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(w,yy);ctx.stroke()}
+ view.forEach((x,i)=>{
+  const xx=i*step+step/2,up=x.c>=x.o;
+  ctx.strokeStyle=ctx.fillStyle=up?'#2ef2a3':'#ff537d';
+  ctx.beginPath();ctx.moveTo(xx,y(x.h));ctx.lineTo(xx,y(x.l));ctx.stroke();
+  ctx.fillRect(xx-cw/2,y(Math.max(x.o,x.c)),cw,Math.max(1,y(Math.min(x.o,x.c))-y(Math.max(x.o,x.c))));
+ });
+ const start=candles.length-view.length;
+ [[e9,'#37d7ff'],[e21,'#a58cff']].forEach(([arr,col])=>{
+  ctx.strokeStyle=col;ctx.lineWidth=1.7;ctx.beginPath();
+  view.forEach((x,i)=>{const xx=i*step+step/2,yy=y(arr[start+i]);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)});
+  ctx.stroke();
+ });
+}
+function calculate(){
+ const closes=candles.map(x=>x.c),e9=ema(closes,9),e21=ema(closes,21),rv=rsi(closes),i=closes.length-1,c=candles[i];
+ const up=e9[i]>e21[i]&&rv>=54&&c.c>c.o;
+ const down=e9[i]<e21[i]&&rv<=46&&c.c<c.o;
+ const signal=up?'BUY':down?'SELL':'WAIT';
+ $('price').textContent=fmt(c.c);$('ema9').textContent=fmt(e9[i]);
+ $('ema21').textContent=fmt(e21[i]);$('rsi').textContent=rv.toFixed(1);
+ $('time').textContent=new Date(c.t).toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});
+ $('signal').textContent=signal;
+ $('signal').className='signal '+(signal==='BUY'?'buy':signal==='SELL'?'sell':'wait');
+ $('direction').textContent=signal==='WAIT'?'Menunggu setup':signal+' disahkan (demo)';
+ $('signalNote').textContent=signal==='WAIT'?'Belum ada setup demo.':'Signal '+signal+' daripada candle simulasi yang telah ditutup.';
+ const entry=c.c,dist=Math.max(.5,Number($('distance').value)||2.5),sgn=signal==='BUY'?1:-1;
+ $('entry').textContent=signal==='WAIT'?'—':fmt(entry);
+ $('sl').textContent=signal==='WAIT'?'—':fmt(entry-sgn*dist);
+ $('tp1').textContent=signal==='WAIT'?'—':fmt(entry+sgn*dist);
+ $('tp2').textContent=signal==='WAIT'?'—':fmt(entry+sgn*dist*1.5);
+ $('tp3').textContent=signal==='WAIT'?'—':fmt(entry+sgn*dist*2);
+ if(signal!=='WAIT'&&signal!==lastSignal){
+  log(signal+' SIGNAL',fmt(entry));
+  if($('signalAlert').checked)notify('BLUEGOLD M1 — '+signal,'Signal simulasi pada '+fmt(entry));
+ }
+ lastSignal=signal;draw(e9,e21);riskCalc();
+}
+function nextCandle(){
+ const p=candles[candles.length-1].c,o=p,c=o+(random()-.49)*2.4;
+ candles.push({o,c,h:Math.max(o,c)+random()*.4,l:Math.min(o,c)-random()*.4,t:Date.now()});
+ if(candles.length>180)candles.shift();
+ calculate();checkTrade(c);
+}
+function checkTrade(p){
+ if(!trade)return;
+ const sl=trade.dir==='BUY'?p<=trade.sl:p>=trade.sl;
+ const tp=trade.dir==='BUY'?p>=trade.tp:p<=trade.tp;
+ if(sl){
+  log('SL TERCAPAI',fmt(p));
+  if($('slAlert').checked)notify('BLUEGOLD M1 — SL','Paras SL simulasi dicapai: '+fmt(p));
+  trade=null;
+ }else if(tp){
+  log('TP TERCAPAI',fmt(p));
+  if($('tpAlert').checked)notify('BLUEGOLD M1 — TP','Paras TP simulasi dicapai: '+fmt(p));
+  trade=null;
+ }
+}
+$('enable').addEventListener('click',async()=>{
+ if(!('Notification'in window)){$('permission').textContent='Tidak disokong';return}
+ try{
+  const p=await Notification.requestPermission();
+  $('permission').textContent=p==='granted'?'Dibenarkan ketika halaman aktif':p==='denied'?'Disekat':'Belum dibenarkan';
+ }catch(e){$('permission').textContent='Tidak tersedia'}
+});
+$('test').addEventListener('click',()=>{
+ notify('BLUEGOLD M1 — UJIAN','Notifikasi ujian sahaja.');
+ if(!('Notification'in window)||Notification.permission!=='granted')alert('Benarkan notifikasi dahulu. Push ketika app ditutup belum disediakan.');
+});
+$('clear').addEventListener('click',()=>{$('history').className='small';$('history').textContent='Log dikosongkan.'});
+['balance','risk','distance'].forEach(id=>$(id).addEventListener('input',riskCalc));
+window.addEventListener('resize',calculate);
+makeCandles();calculate();setInterval(nextCandle,15000);
+})();
 </script>
-</body></html>
+</body>
+</html>
